@@ -1,6 +1,5 @@
 import requests
-from .models import Address
-from datetime import datetime
+from .models import Address, Name, PhoneNumber, Website
 
 
 class BusinessDataService:
@@ -19,16 +18,13 @@ class BusinessDataService:
     def get_business_id(self):
         return self.results[0]["businessId"]
 
-    def get_name(self):
-        return self.results[0]["name"]
-
     def number_of_results(self):
         return len(self.jsonData["results"])
 
     def get_result(self):
         return self.results[0]
 
-    def getAddressAndSaveToDb(self, company):
+    def save_addresses_to_db(self, company):
         street = ""
         postcode = ""
         city = ""
@@ -42,6 +38,7 @@ class BusinessDataService:
 
                 # Check if address already exists in db
                 result = Address.objects.filter(
+                    street=street,
                     company=company.business_id,
                     registration_date=registration_date)
 
@@ -54,56 +51,76 @@ class BusinessDataService:
                                       city=city,
                                       registration_date=registration_date,
                                       end_date=None,
-                                      modified_date=datetime.now(),
                                       company=company
                                       )
                     address.save()
                 elif result_length == 1:
-                    # TODO Check if data needs to be updated
+                    # Check if data needs to be updated
                     address_in_db = result[0]
-                    print(address_in_db.street,
-                          address_in_db.post_code, address_in_db.city)
-
-                return f"{street} {postcode} {city}"
-        return ""
+                    if address_in_db.needs_update(street, postcode, city):
+                        address_in_db.street = street
+                        address_in_db.postcode = postcode
+                        address_in_db.city = city
+                        address_in_db.save()
+            else:
+                # TODO Check if valid address has ended
+                # return f"{street} {postcode} {city}"
+                # return ""
+                pass
 
     def isValid(self, data):
         return data["endDate"] is None
 
-    def getDetailAndSaveToDb(self, contactDetailLabel,
-                             className,
-                             company):
-        contactDetails = self.get_result()["contactDetails"]
-        for contact in contactDetails:
-            if(self.isValid(contact)):
+    def save_data_to_db(self, arrayLabel, dataTypes, dataLabel,
+                        className, company):
+        dataArray = self.get_result()[arrayLabel]
+        for data in dataArray:
+            if(self.isValid(data)):
 
-                if contact["type"] == contactDetailLabel:
-                    value = contact["value"]
-                    registration_date = contact["registrationDate"]
+                if "type" in data and data["type"] in dataTypes:
+                    value = data[dataLabel]
+                    registration_date = data["registrationDate"]
 
-                    # Check if contact detail already exists in db
-                    contact_from_db = className.objects.filter(
+                    # Check if data already exists in db
+                    data_from_db = className.objects.filter(
+                        value=value,
                         company=company.business_id,
                         registration_date=registration_date)
 
-                    result_length = len(contact_from_db)
+                    result_length = len(data_from_db)
 
                     if result_length == 0:
                         # Does not exist, create it
-                        detail = className(value=value,
-                                           registration_date=registration_date,
-                                           end_date=None,
-                                           modified_date=datetime.now(),
-                                           company=company)
-                        detail.save()
+                        data = className(value=value,
+                                         registration_date=registration_date,
+                                         end_date=None,
+                                         company=company)
+                        data.save()
                     elif result_length == 1:
                         # Check if data needs to be updated
-                        contact = contact_from_db[0]
-                        if contact.value != value:
-                            contact.value = value
-                            contact.save()
-                            print("Value saved to DB")
-                        else:
-                            print("Value not saved")
-                    return value
-        return ""
+                        data = data_from_db[0]
+                        if data.value != value:
+                            data.value = value
+                            data.save()
+
+    def form_response_from_db(self, business_id):
+        name = Name.objects.filter(company=business_id)
+
+        address_results = Address.objects.filter(
+            company=business_id).exclude(street__startswith="PL")
+        if(len(address_results) > 0):
+            street = address_results[0].street
+            post_code = address_results[0].post_code
+            city = address_results[0].city
+
+        phone_results = PhoneNumber.objects.filter(company=business_id)
+        phone = phone_results[0].value if len(phone_results) > 0 else ""
+
+        website_results = Website.objects.filter(company=business_id)
+        website = website_results[0].value if len(website_results) > 0 else ""
+
+        return {"business_id": business_id,
+                "name": name[0].value,
+                "address": f"{street} {post_code} {city}",
+                "phone": phone,
+                "website": website}

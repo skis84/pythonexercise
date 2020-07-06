@@ -5,30 +5,41 @@ from django.db import models
 
 class Company(models.Model):
     business_id = models.SlugField(max_length=9, primary_key=True)
-    name = models.CharField(max_length=255, default='')
 
 
-class TimeData(models.Model):
-    registration_date = models.DateTimeField()
-    end_date = models.DateTimeField(null=True)
-    modified_date = models.DateTimeField()
+class CompanyData(models.Model):
+    registration_date = models.DateField()
+    end_date = models.DateField(null=True)
+    modified = models.DateTimeField(auto_now=True)
+    company = models.ForeignKey(Company, on_delete=models.CASCADE)
 
     class Meta:
         abstract = True
 
 
-class Address(TimeData):
+class Name(CompanyData):
+    value = models.CharField(max_length=255)
+
+
+class Address(CompanyData):
     street = models.CharField(max_length=255)
     post_code = models.SlugField(max_length=5)
     city = models.CharField(max_length=255)
-    company = models.ForeignKey(Company, on_delete=models.CASCADE)
+
+    def needs_update(self, street, postcode, city):
+        if(self.street != street):
+            return True
+        elif(self.post_code != postcode):
+            return True
+        elif(self.city != city):
+            return True
+        else:
+            return False
 
 
-class PhoneNumber(TimeData):
+class PhoneNumber(CompanyData):
     value = models.CharField(max_length=255)
-    company = models.ForeignKey(Company, on_delete=models.CASCADE)
 
 
-class Website(TimeData):
+class Website(CompanyData):
     value = models.URLField()
-    company = models.ForeignKey(Company, on_delete=models.CASCADE)

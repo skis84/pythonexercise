@@ -1,6 +1,6 @@
 from django.http import JsonResponse, HttpResponseBadRequest, Http404
 from .validator import Validator
-from .models import Company, PhoneNumber, Website
+from .models import Company, Name, PhoneNumber, Website
 from .businessdataservice import BusinessDataService
 
 
@@ -25,26 +25,26 @@ def index(request, company_id):
         raise Http404()
 
     business_id = service.get_business_id()
-    name = service.get_name()
 
     # Check if Company already exists in local db
     try:
         company = Company.objects.get(business_id=business_id)
     except Company.DoesNotExist:
         # If not, store it
-        company = Company(business_id, name)
+        company = Company(business_id)
         company.save()
 
-    address = service.getAddressAndSaveToDb(company)
-    phone = service.getDetailAndSaveToDb("Matkapuhelin", PhoneNumber,
-                                         company)
-    website = service.getDetailAndSaveToDb("Kotisivun www-osoite", Website,
-                                           company)
+    service.save_data_to_db("names", [], "name", Name,
+                            company)
+    service.save_addresses_to_db(company)
+    service.save_data_to_db("contactDetails", ["Matkapuhelin", "Puhelin"],
+                            "value",
+                            PhoneNumber, company)
+    service.save_data_to_db("contactDetails",
+                            ["Kotisivun www-osoite"], "value",
+                            Website, company)
 
-    filteredResponse = {"business_id": business_id,
-                        "name": name,
-                        "address": address,
-                        "phone": phone,
-                        "website": website}
+    # Query database
+    response = service.form_response_from_db(business_id)
 
-    return JsonResponse(filteredResponse, safe=False)
+    return JsonResponse(response, safe=False)
