@@ -12,6 +12,7 @@ class CompanyData(models.Model):
     end_date = models.DateField(null=True)
     modified = models.DateTimeField(auto_now=True)
     company = models.ForeignKey(Company, on_delete=models.CASCADE)
+    language = models.CharField(max_length=2, null=True)
 
     class Meta:
         abstract = True
@@ -25,6 +26,9 @@ class Address(CompanyData):
     street = models.CharField(max_length=255)
     post_code = models.SlugField(max_length=5)
     city = models.CharField(max_length=255)
+    country = models.CharField(max_length=2, null=True)
+    # addres type: 1 for street address, 2 for postal address
+    type = models.CharField(max_length=1, default='1')
 
     def needs_update(self, street, postcode, city):
         if(self.street != street):

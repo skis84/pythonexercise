@@ -31,10 +31,13 @@ class BusinessDataService:
         addresses = self.get_result()["addresses"]
         for address in addresses:
             if self.is_valid(address) and address["street"] != "":
-                street = address["street"]
-                postcode = address["postCode"]
-                city = address["city"]
-                registration_date = address["registrationDate"]
+                street = address.get("street")
+                postcode = address.get("postCode")
+                city = address.get("city")
+                country = address.get("country")
+                registration_date = address.get("registrationDate")
+                address_type = address.get("type")
+                language = address.get("language")
 
                 # Check if address already exists in db
                 result = Address.objects.filter(
@@ -49,8 +52,11 @@ class BusinessDataService:
                     address = Address(street=street,
                                       post_code=postcode,
                                       city=city,
+                                      country=country,
+                                      type=address_type,
                                       registration_date=registration_date,
                                       end_date=None,
+                                      language=language,
                                       company=company
                                       )
                     address.save()
@@ -75,7 +81,7 @@ class BusinessDataService:
                         className, company):
         dataArray = self.get_result()[arrayLabel]
         for data in dataArray:
-            if(self.isValid(data)):
+            if(self.is_valid(data)):
 
                 if "type" in data and data["type"] in dataTypes:
                     value = data[dataLabel]
