@@ -8,11 +8,16 @@ class Company(models.Model):
 
 
 class CompanyData(models.Model):
+    # 1 for current version, >1 for historical data
+    version = models.CharField(max_length=1, default='1')
+    # 0 common, 1 = PRH, 2 = Verohallinto, 3 = BIS
+    source = models.CharField(max_length=1, null=True)
     registration_date = models.DateField()
     end_date = models.DateField(null=True)
     modified = models.DateTimeField(auto_now=True)
     company = models.ForeignKey(Company, on_delete=models.CASCADE)
     language = models.CharField(max_length=2, null=True)
+    data_type = models.CharField(max_length=127)
 
     class Meta:
         abstract = True
@@ -27,8 +32,6 @@ class Address(CompanyData):
     post_code = models.SlugField(max_length=5)
     city = models.CharField(max_length=255)
     country = models.CharField(max_length=2, null=True)
-    # addres type: 1 for street address, 2 for postal address
-    type = models.CharField(max_length=1, default='1')
 
     def needs_update(self, street, postcode, city):
         if(self.street != street):

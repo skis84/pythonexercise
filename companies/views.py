@@ -1,16 +1,10 @@
 from django.http import JsonResponse, HttpResponseBadRequest, Http404
 from .validator import Validator
-from .models import Company, Name, PhoneNumber, Website
+from .models import Address, Company, Name, PhoneNumber, Website
 from .businessdataservice import BusinessDataService
 
 
-# "business_id": "<business id>",
-# "name": "<company name>",
-# "address": "<street address, postal code and city>",
-# "phone": "<company primary phone number>",
-# "website": "<company website url>"
-
-
+# Function for endpoint /api/company/<business-id>
 def index(request, company_id):
 
     if Validator.is_valid_company_id(company_id) is False:
@@ -34,17 +28,27 @@ def index(request, company_id):
         company = Company(business_id)
         company.save()
 
-    service.save_data_to_db("names", [], "name", Name,
+    service.save_data_to_db("names", "order", [0], "name", Name,
                             company)
-    service.save_addresses_to_db(company)
-    service.save_data_to_db("contactDetails", ["Matkapuhelin", "Puhelin"],
-                            "value",
-                            PhoneNumber, company)
-    service.save_data_to_db("contactDetails",
-                            ["Kotisivun www-osoite"], "value",
+    service.save_data_to_db("addresses", "type", [1, 2], "street",
+                            Address, company,
+                            service.get_address_from_db,
+                            service.create_address)
+    service.save_data_to_db("contactDetails", "type",
+                            ["Matkapuhelin", "Mobiltelefon", "Mobile phone",
+                             "Puhelin", "Telefon", "Telephone"],
+                            "value", PhoneNumber, company)
+    service.save_data_to_db("contactDetails", "type",
+                            ["Kotisivun www-osoite", "www-address",
+                             "Website address"], "value",
                             Website, company)
 
-    # Query database
+    # Query database to get the result JSON
+    # "business_id": "<business id>",
+    # "name": "<company name>",
+    # "address": "<street address, postal code and city>",
+    # "phone": "<company primary phone number>",
+    # "website": "<company website url>"
     response = service.form_response_from_db(business_id)
 
     return JsonResponse(response, safe=False)
