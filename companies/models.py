@@ -33,16 +33,6 @@ class Address(CompanyData):
     city = models.CharField(max_length=255)
     country = models.CharField(max_length=2, null=True)
 
-    def needs_update(self, street, postcode, city):
-        if(self.street != street):
-            return True
-        elif(self.post_code != postcode):
-            return True
-        elif(self.city != city):
-            return True
-        else:
-            return False
-
 
 class PhoneNumber(CompanyData):
     value = models.CharField(max_length=255)
