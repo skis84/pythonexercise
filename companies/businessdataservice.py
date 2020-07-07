@@ -30,7 +30,7 @@ class BusinessDataService:
         city = ""
         addresses = self.get_result()["addresses"]
         for address in addresses:
-            if self.isValid(address) and address["street"] != "":
+            if self.is_valid(address) and address["street"] != "":
                 street = address["street"]
                 postcode = address["postCode"]
                 city = address["city"]
@@ -68,7 +68,7 @@ class BusinessDataService:
                 # return ""
                 pass
 
-    def isValid(self, data):
+    def is_valid(self, data):
         return data["endDate"] is None
 
     def save_data_to_db(self, arrayLabel, dataTypes, dataLabel,
@@ -108,10 +108,9 @@ class BusinessDataService:
 
         address_results = Address.objects.filter(
             company=business_id).exclude(street__startswith="PL")
-        if(len(address_results) > 0):
-            street = address_results[0].street
-            post_code = address_results[0].post_code
-            city = address_results[0].city
+        address = (address_results[0].street + ", " +
+                   address_results[0].post_code + " " +
+                   address_results[0].city) if len(address_results) > 0 else ""
 
         phone_results = PhoneNumber.objects.filter(company=business_id)
         phone = phone_results[0].value if len(phone_results) > 0 else ""
@@ -121,6 +120,6 @@ class BusinessDataService:
 
         return {"business_id": business_id,
                 "name": name[0].value,
-                "address": f"{street} {post_code} {city}",
+                "address": address,
                 "phone": phone,
                 "website": website}
