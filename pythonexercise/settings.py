@@ -26,7 +26,7 @@ SECRET_KEY = '1$+knf%t1(u2arv=s-s5h35m41-yp7o7ccb_#nze0e4br_w+4!'
 # DEBUG = True
 DEBUG = int(os.environ.get('DEBUG', default=1))
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['.herokuapp.com']
 
 
 # Application definition
@@ -89,7 +89,8 @@ DATABASES = {
 
 AUTH_PASSWORD_VALIDATORS = [
     {'NAME':
-        'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
+        '''django.contrib.auth.password_validation.
+        UserAttributeSimilarityValidator''',
      },
     {
         'NAME':

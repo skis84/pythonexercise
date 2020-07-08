@@ -1,13 +1,13 @@
 from django.db import models
 
 """
-.. module:: models
    :synopsis: Contains models for the company API
 .. moduleauthor:: Sanna Luukkonen
 """
 
 
 class Company(models.Model):
+    '''Model class for company'''
     business_id = models.SlugField(max_length=9, primary_key=True)
     # This field is added for convenience in admin panel,
     # the actual names are stored in Name table
@@ -18,6 +18,7 @@ class Company(models.Model):
 
 
 class CompanyData(models.Model):
+    '''Base class for company data'''
     # 1 for current version, >1 for historical data
     version = models.CharField(max_length=1, default='1')
     # 0 common, 1 = PRH, 2 = Verohallinto, 3 = BIS
@@ -37,6 +38,7 @@ class CompanyData(models.Model):
 
 
 class Name(CompanyData):
+    '''Name class for storing company names'''
     value = models.CharField(max_length=255)
 
     def __str__(self):
@@ -44,6 +46,7 @@ class Name(CompanyData):
 
 
 class Address(CompanyData):
+    '''Address class for storing company addresses'''
     street = models.CharField(max_length=255)
     post_code = models.SlugField(max_length=5)
     city = models.CharField(max_length=255)
@@ -54,6 +57,7 @@ class Address(CompanyData):
 
 
 class PhoneNumber(CompanyData):
+    '''PhoneNumber class for storing company phone numbers'''
     value = models.CharField(max_length=255)
 
     def __str__(self):
@@ -61,6 +65,7 @@ class PhoneNumber(CompanyData):
 
 
 class Website(CompanyData):
+    '''Website class for storing company websites'''
     value = models.URLField()
 
     def __str__(self):
