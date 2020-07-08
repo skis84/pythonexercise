@@ -13,6 +13,7 @@ gunicorn = "*"
 requests = "*"
 sphinx = "*"
 rinohtype = "*"
+whitenoise = "*"
 
 [requires]
 python_version = "3.8"

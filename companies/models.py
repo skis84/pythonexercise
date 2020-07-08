@@ -22,7 +22,9 @@ class CompanyData(models.Model):
     version = models.CharField(max_length=1, default='1')
     # 0 common, 1 = PRH, 2 = Verohallinto, 3 = BIS
     source = models.CharField(max_length=1, null=True)
-    registration_date = models.DateField()
+    # This should not optional according to the specification of BIS opendata,
+    # but there is data that does not have this field set
+    registration_date = models.DateField(blank=True, null=True)
     end_date = models.DateField(blank=True, null=True)
     modified = models.DateTimeField(auto_now=True)
     company = models.ForeignKey(Company, on_delete=models.CASCADE)
