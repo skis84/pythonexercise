@@ -68,13 +68,13 @@ class BusinessDataService:
                             data_label="", type_label=""):
         try:
             return Address.objects.filter(
-                    street=addr_in_json.get("street"),
-                    post_code=addr_in_json.get("postCode"),
-                    city=addr_in_json.get("city"),
-                    data_type=addr_in_json.get(self.address_type_label),
-                    company=company,
-                    language=addr_in_json.get(self.lang_label),
-                    registration_date=addr_in_json.get(self.reg_date_label))[0]
+                street=addr_in_json.get("street"),
+                post_code=addr_in_json.get("postCode"),
+                city=addr_in_json.get("city"),
+                data_type=addr_in_json.get(self.address_type_label),
+                company=company,
+                language=addr_in_json.get(self.lang_label),
+                registration_date=addr_in_json.get(self.reg_date_label))[0]
         except IndexError:
             return None
 
@@ -97,11 +97,11 @@ class BusinessDataService:
                          data_label, type_label):
         try:
             return class_name.objects.filter(
-                    value=data.get(data_label),
-                    data_type=data.get(type_label),
-                    company=company,
-                    language=data.get(self.lang_label),
-                    registration_date=data.get(self.reg_date_label))[0]
+                value=data.get(data_label),
+                data_type=data.get(type_label),
+                company=company,
+                language=data.get(self.lang_label),
+                registration_date=data.get(self.reg_date_label))[0]
         except IndexError:
             return None
 
