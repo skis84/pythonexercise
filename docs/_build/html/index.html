@@ -40,6 +40,25 @@
 <em class="property">class </em><code class="sig-prename descclassname">companies.businessdataservice.</code><code class="sig-name descname">BusinessDataService</code><a class="headerlink" href="#companies.businessdataservice.BusinessDataService" title="Permalink to this definition">¶</a></dt>
 <dd><p>Class for fetching data from api endpoint and storing it to local db.</p>
 <dl class="py method">
+<dt id="companies.businessdataservice.BusinessDataService.create_address">
+<code class="sig-name descname">create_address</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">company</span></em>, <em class="sig-param"><span class="n">address</span></em>, <em class="sig-param"><span class="o">*</span><span class="n">argv</span></em><span class="sig-paren">)</span><a class="headerlink" href="#companies.businessdataservice.BusinessDataService.create_address" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a new Address object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Params company</dt>
+<dd class="field-odd"><p>Company to which the data is related to. This is used
+as the foreign key for the data.</p>
+</dd>
+<dt class="field-even">Params address</dt>
+<dd class="field-even"><p>dictionary that contains the new address</p>
+</dd>
+<dt class="field-odd">Params argv</dt>
+<dd class="field-odd"><p>This is for method signature compatibility with
+create_db_object</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
 <dt id="companies.businessdataservice.BusinessDataService.create_db_object">
 <code class="sig-name descname">create_db_object</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">company</span></em>, <em class="sig-param"><span class="n">data</span></em>, <em class="sig-param"><span class="n">class_name</span></em>, <em class="sig-param"><span class="n">data_label</span></em>, <em class="sig-param"><span class="n">type_label</span></em><span class="sig-paren">)</span><a class="headerlink" href="#companies.businessdataservice.BusinessDataService.create_db_object" title="Permalink to this definition">¶</a></dt>
 <dd><p>Creates a new model object.</p>
@@ -66,25 +85,19 @@ as the foreign key for the data.</p>
 <dl class="py method">
 <dt id="companies.businessdataservice.BusinessDataService.form_response_from_db">
 <code class="sig-name descname">form_response_from_db</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">business_id</span></em><span class="sig-paren">)</span><a class="headerlink" href="#companies.businessdataservice.BusinessDataService.form_response_from_db" title="Permalink to this definition">¶</a></dt>
-<dd><p>Returns a data model object from the database.</p>
-<p>: params company: Company to which the data is related to
-: params addr_in_json: dictionary that contains the data to
-search for
-: params class_name: The name of the model class to use in search
-: params data_label: The label for the data in the dictionary
-: params type_label: The label for the data type in the dictionary</p>
+<dd><p>Forms the API JSON response based on the data in database.</p>
+<p>: params business_id: The business id of the company whose data to get.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt id="companies.businessdataservice.BusinessDataService.get_address_from_db">
-<code class="sig-name descname">get_address_from_db</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">company</span></em>, <em class="sig-param"><span class="n">addr_in_json</span></em>, <em class="sig-param"><span class="n">class_name</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">data_label</span><span class="o">=</span><span class="default_value">''</span></em>, <em class="sig-param"><span class="n">type_label</span><span class="o">=</span><span class="default_value">''</span></em><span class="sig-paren">)</span><a class="headerlink" href="#companies.businessdataservice.BusinessDataService.get_address_from_db" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">get_address_from_db</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">company</span></em>, <em class="sig-param"><span class="n">addr_in_json</span></em>, <em class="sig-param"><span class="o">*</span><span class="n">argv</span></em><span class="sig-paren">)</span><a class="headerlink" href="#companies.businessdataservice.BusinessDataService.get_address_from_db" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns an Address object from the database.
 :params company: Company to which the address is related to
 :params addr_in_json: dictionary that contains the address data to
 search for
-:params class_name:
-:params data_label:
-:params type_label:</p>
+:params argv: This is just for method signature compatibility with
+get_data_from_db</p>
 </dd></dl>
 
 <dl class="py method">
@@ -98,7 +111,7 @@ business id was found from JSON data</p>
 <dt id="companies.businessdataservice.BusinessDataService.get_company_from_db">
 <code class="sig-name descname">get_company_from_db</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">business_id</span></em><span class="sig-paren">)</span><a class="headerlink" href="#companies.businessdataservice.BusinessDataService.get_company_from_db" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="simple">
-<dt>get company from db. Creates a new company if a</dt><dd><p>company with the given business id is does not exist.</p>
+<dt>Get company object from db. Creates a new company if a</dt><dd><p>company with the given business id is does not exist.</p>
 </dd>
 </dl>
 <dl class="field-list simple">

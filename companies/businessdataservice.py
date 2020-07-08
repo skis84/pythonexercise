@@ -31,14 +31,14 @@ class BusinessDataService:
     # Get company from db or create a new one
     # if company does not exist
     def get_company_from_db(self, business_id):
-        ''' get company from db. Creates a new company if a
+        ''' Get company object from db. Creates a new company if a
             company with the given business id is does not exist.
 
         :param business_id: Business id of the company to search for
 
         '''
-        # Check if Company already exists in local db
         try:
+            # Check if Company already exists in local db
             company = Company.objects.get(business_id=business_id)
         except Company.DoesNotExist:
             # If not, store it
@@ -122,15 +122,13 @@ class BusinessDataService:
         relevant data'''
         return self.results[0]
 
-    def get_address_from_db(self, company, addr_in_json, class_name=None,
-                            data_label="", type_label=""):
+    def get_address_from_db(self, company, addr_in_json, *argv):
         ''' Returns an Address object from the database.
         :params company: Company to which the address is related to
         :params addr_in_json: dictionary that contains the address data to
         search for
-        :params class_name:
-        :params data_label:
-        :params type_label:
+        :params argv: This is just for method signature compatibility with
+        get_data_from_db
 
         '''
         try:
@@ -145,8 +143,17 @@ class BusinessDataService:
         except IndexError:
             return None
 
-    def create_address(self, company, address, class_name="",
-                       data_label="", type_label=""):
+    def create_address(self, company, address, *argv):
+        ''' Creates a new Address object.
+
+        :params company: Company to which the data is related to. This is used
+                         as the foreign key for the data.
+        :params address: dictionary that contains the new address
+        :params argv: This is for method signature compatibility with
+                      create_db_object
+
+        '''
+
         return Address(street=address.get("street"),
                        post_code=address.get("postCode"),
                        city=address.get("city"),
@@ -194,7 +201,8 @@ class BusinessDataService:
         :params data: dictionary that contains the new data
         :params class_name: The name of the model class to instantiate
         :params data_label: The label for the data in the dictionary
-        :params type_label: The label for the data type in the dictionary'''
+        :params type_label: The label for the data type in the dictionary
+        '''
         return class_name(value=data.get(data_label),
                           registration_date=data.get(self.reg_date_label),
                           end_date=None,
@@ -205,14 +213,9 @@ class BusinessDataService:
                           version=data.get(self.version_label))
 
     def form_response_from_db(self, business_id):
-        ''' Returns a data model object from the database.
+        ''' Forms the API JSON response based on the data in database.
 
-        : params company: Company to which the data is related to
-        : params addr_in_json: dictionary that contains the data to
-        search for
-        : params class_name: The name of the model class to use in search
-        : params data_label: The label for the data in the dictionary
-        : params type_label: The label for the data type in the dictionary
+        : params business_id: The business id of the company whose data to get.
 
         '''
         name = Name.objects.filter(company=business_id)
