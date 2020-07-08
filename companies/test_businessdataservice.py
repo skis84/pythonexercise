@@ -69,6 +69,21 @@ class BusinessDataServiceTestCase(TestCase):
         self.assertEqual(response["phone"], "1234567")
         self.assertEqual(response["website"], "www.testcompany.fi")
 
+    def test_last_modified_result_is_selected(self):
+        # First put some data to db
+        company = self.populateDb()
+
+        address = Address(street="Test street 2", post_code="12345",
+                          city="Testcity", registration_date="2020-01-01",
+                          language="FI", data_type="1", version="1",
+                          end_date=None, company=company)
+        address.save()
+
+        # Then form response and check that Tests street 2 is the address
+        service = BusinessDataService()
+        response = service.form_response_from_db("1234567-8")
+        self.assertEqual(response["address"], "Test street 2, 12345 Testcity")
+
     def test_form_response_without_data(self):
         # First put some data to db but don't include address
         self.populateDb(False)
@@ -94,6 +109,7 @@ class BusinessDataServiceTestCase(TestCase):
                               language="FI", data_type="1", version="1",
                               end_date=None, company=company)
             address.save()
+
             phone = PhoneNumber(value="1234567",
                                 registration_date="2020-01-01",
                                 end_date=None, company=company)
@@ -102,6 +118,7 @@ class BusinessDataServiceTestCase(TestCase):
                               registration_date="2020-01-01",
                               end_date=None, company=company)
             website.save()
+        return company
 
 
 class MockBusinessDataService (BusinessDataService):

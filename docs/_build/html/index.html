@@ -1,0 +1,277 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome to Companies API’s documentation! &#8212; Companies API 0.0.1 documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="welcome-to-companies-api-s-documentation">
+<h1>Welcome to Companies API’s documentation!<a class="headerlink" href="#welcome-to-companies-api-s-documentation" title="Permalink to this headline">¶</a></h1>
+<div class="toctree-wrapper compound">
+</div>
+<span class="target" id="module-companies.businessdataservice"></span><dl class="py class">
+<dt id="companies.businessdataservice.BusinessDataService">
+<em class="property">class </em><code class="sig-prename descclassname">companies.businessdataservice.</code><code class="sig-name descname">BusinessDataService</code><a class="headerlink" href="#companies.businessdataservice.BusinessDataService" title="Permalink to this definition">¶</a></dt>
+<dd><p>Class for fetching data from api endpoint and storing it to local db.</p>
+<dl class="py method">
+<dt id="companies.businessdataservice.BusinessDataService.create_db_object">
+<code class="sig-name descname">create_db_object</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">company</span></em>, <em class="sig-param"><span class="n">data</span></em>, <em class="sig-param"><span class="n">class_name</span></em>, <em class="sig-param"><span class="n">data_label</span></em>, <em class="sig-param"><span class="n">type_label</span></em><span class="sig-paren">)</span><a class="headerlink" href="#companies.businessdataservice.BusinessDataService.create_db_object" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a new model object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Params company</dt>
+<dd class="field-odd"><p>Company to which the data is related to. This is used
+as the foreign key for the data.</p>
+</dd>
+<dt class="field-even">Params data</dt>
+<dd class="field-even"><p>dictionary that contains the new data</p>
+</dd>
+<dt class="field-odd">Params class_name</dt>
+<dd class="field-odd"><p>The name of the model class to instantiate</p>
+</dd>
+<dt class="field-even">Params data_label</dt>
+<dd class="field-even"><p>The label for the data in the dictionary</p>
+</dd>
+<dt class="field-odd">Params type_label</dt>
+<dd class="field-odd"><p>The label for the data type in the dictionary</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="companies.businessdataservice.BusinessDataService.form_response_from_db">
+<code class="sig-name descname">form_response_from_db</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">business_id</span></em><span class="sig-paren">)</span><a class="headerlink" href="#companies.businessdataservice.BusinessDataService.form_response_from_db" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a data model object from the database.</p>
+<p>: params company: Company to which the data is related to
+: params addr_in_json: dictionary that contains the data to
+search for
+: params class_name: The name of the model class to use in search
+: params data_label: The label for the data in the dictionary
+: params type_label: The label for the data type in the dictionary</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="companies.businessdataservice.BusinessDataService.get_address_from_db">
+<code class="sig-name descname">get_address_from_db</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">company</span></em>, <em class="sig-param"><span class="n">addr_in_json</span></em>, <em class="sig-param"><span class="n">class_name</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">data_label</span><span class="o">=</span><span class="default_value">''</span></em>, <em class="sig-param"><span class="n">type_label</span><span class="o">=</span><span class="default_value">''</span></em><span class="sig-paren">)</span><a class="headerlink" href="#companies.businessdataservice.BusinessDataService.get_address_from_db" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns an Address object from the database.
+:params company: Company to which the address is related to
+:params addr_in_json: dictionary that contains the address data to
+search for
+:params class_name:
+:params data_label:
+:params type_label:</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="companies.businessdataservice.BusinessDataService.get_business_id">
+<code class="sig-name descname">get_business_id</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#companies.businessdataservice.BusinessDataService.get_business_id" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the business id if get_results has been called and
+business id was found from JSON data</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="companies.businessdataservice.BusinessDataService.get_company_from_db">
+<code class="sig-name descname">get_company_from_db</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">business_id</span></em><span class="sig-paren">)</span><a class="headerlink" href="#companies.businessdataservice.BusinessDataService.get_company_from_db" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="simple">
+<dt>get company from db. Creates a new company if a</dt><dd><p>company with the given business id is does not exist.</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>business_id</strong> – Business id of the company to search for</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="companies.businessdataservice.BusinessDataService.get_data_from_db">
+<code class="sig-name descname">get_data_from_db</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">company</span></em>, <em class="sig-param"><span class="n">data</span></em>, <em class="sig-param"><span class="n">class_name</span></em>, <em class="sig-param"><span class="n">data_label</span></em>, <em class="sig-param"><span class="n">type_label</span></em><span class="sig-paren">)</span><a class="headerlink" href="#companies.businessdataservice.BusinessDataService.get_data_from_db" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a data model object from the database.
+:params company: Company to which the data is related to
+:params addr_in_json: dictionary that contains the data to
+search for
+:params class_name: The name of the model class to use in search
+:params data_label: The label for the data in the dictionary
+:params type_label: The label for the data type in the dictionary</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="companies.businessdataservice.BusinessDataService.get_name">
+<code class="sig-name descname">get_name</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#companies.businessdataservice.BusinessDataService.get_name" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the company name if get_results has been called and
+business name was found from JSON data</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="companies.businessdataservice.BusinessDataService.get_result">
+<code class="sig-name descname">get_result</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#companies.businessdataservice.BusinessDataService.get_result" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the result array that contains the name, address and other
+relevant data</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="companies.businessdataservice.BusinessDataService.get_results">
+<code class="sig-name descname">get_results</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">company_id</span></em><span class="sig-paren">)</span><a class="headerlink" href="#companies.businessdataservice.BusinessDataService.get_results" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets results from the api endpoint and stores
+the result JSON in class property</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="companies.businessdataservice.BusinessDataService.is_valid">
+<code class="sig-name descname">is_valid</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">data</span></em><span class="sig-paren">)</span><a class="headerlink" href="#companies.businessdataservice.BusinessDataService.is_valid" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns true if the data has no end date.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="companies.businessdataservice.BusinessDataService.number_of_results">
+<code class="sig-name descname">number_of_results</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#companies.businessdataservice.BusinessDataService.number_of_results" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the number of results if get_results has been called and
+there are results</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="companies.businessdataservice.BusinessDataService.save_data_to_db">
+<code class="sig-name descname">save_data_to_db</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">array_label</span></em>, <em class="sig-param"><span class="n">type_label</span></em>, <em class="sig-param"><span class="n">accepted_data_types</span></em>, <em class="sig-param"><span class="n">data_label</span></em>, <em class="sig-param"><span class="n">class_name</span></em>, <em class="sig-param"><span class="n">company</span></em>, <em class="sig-param"><span class="n">get_data_from_db</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">create_db_object</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#companies.businessdataservice.BusinessDataService.save_data_to_db" title="Permalink to this definition">¶</a></dt>
+<dd><p>Examines a certain subset of JSON result and stores data to db (SQLite3)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>array_label</strong> – The name of the subset in JSON to examine
+e.g. “names”</p></li>
+<li><p><strong>type_label</strong> – Label for the accepted type, e.g. order</p></li>
+<li><p><strong>accepted_data_types_label</strong> – List of accepted data types, e.g. [0]</p></li>
+<li><p><strong>data_label</strong> – Label of the data that should be selected,
+e.g. “name”</p></li>
+<li><p><strong>class_name</strong> – Class name of the model for the data in db</p></li>
+<li><p><strong>company</strong> – Company object that data is related to</p></li>
+<li><p><strong>get_data_from_db</strong> – Function for getting data from db to
+see if data already exists in db. If this
+parameter is omitted,
+the data model needs to be a subclass of
+CompanyData with an additional property called
+“value”.</p></li>
+<li><p><strong>create_db_object</strong> – Function for creating a new data model
+object. If this parameter is omitted,
+the data model needs to
+be a subclass of CompanyData with
+an additional property called “value”.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<span class="target" id="module-companies.validator"></span><dl class="py class">
+<dt id="companies.validator.Validator">
+<em class="property">class </em><code class="sig-prename descclassname">companies.validator.</code><code class="sig-name descname">Validator</code><a class="headerlink" href="#companies.validator.Validator" title="Permalink to this definition">¶</a></dt>
+<dd><p>Class for validating a company id.</p>
+<dl class="py method">
+<dt id="companies.validator.Validator.is_valid_company_id">
+<em class="property">classmethod </em><code class="sig-name descname">is_valid_company_id</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">company_id</span></em><span class="sig-paren">)</span><a class="headerlink" href="#companies.validator.Validator.is_valid_company_id" title="Permalink to this definition">¶</a></dt>
+<dd><p>Validates the given company_id. Returns True if the id is valid, 
+False otherwise.
+:param company_id: The company id to validate.</p>
+</dd></dl>
+
+</dd></dl>
+
+<span class="target" id="module-pythonexercise"></span></div>
+<div class="section" id="indices-and-tables">
+<h1>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Permalink to this headline">¶</a></h1>
+<ul class="simple">
+<li><p><a class="reference internal" href="genindex.html"><span class="std std-ref">Index</span></a></p></li>
+<li><p><a class="reference internal" href="py-modindex.html"><span class="std std-ref">Module Index</span></a></p></li>
+<li><p><a class="reference internal" href="search.html"><span class="std std-ref">Search Page</span></a></p></li>
+</ul>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="#">Companies API</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="#">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2020, Sanna Luukkonen.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.1.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/index.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

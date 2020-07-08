@@ -2,7 +2,13 @@ from django.contrib import admin
 from .models import Company, Name, Address, PhoneNumber, Website
 
 # Register your models here.
-admin.site.register(Company)
+
+
+class CompanyAdmin(admin.ModelAdmin):
+    list_display = ('business_id', 'business_name')
+
+
+admin.site.register(Company, CompanyAdmin)
 
 
 class NameAdmin(admin.ModelAdmin):
@@ -16,7 +22,10 @@ admin.site.register(Name, NameAdmin)
 
 class AddressAdmin(admin.ModelAdmin):
     list_display = ('street', 'post_code', 'city',
-                    'country', 'data_type', 'company')
+                    'country', 'version', 'source',
+                    'registration_date',
+                    'end_date', 'modified',
+                    'language', 'data_type', 'company')
 
 
 admin.site.register(Address, AddressAdmin)

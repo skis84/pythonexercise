@@ -3,19 +3,24 @@ import re
 
 
 class Validator:
+    ''' Class for validating a company id.
+    '''
     @classmethod
-    def is_valid_company_id(cls, companyId):
-
+    def is_valid_company_id(cls, company_id):
+        ''' Validates the given company_id. Returns True if the id is valid, 
+        False otherwise.
+        :param company_id: The company id to validate.
+        '''
         # Old form has 6 numbers, zero needs to be added in front in this case
-        matchOldForm = re.search("\\A[0-9]{6}\\-[0-9]{1}", companyId)
+        matchOldForm = re.search("\\A[0-9]{6}\\-[0-9]{1}", company_id)
         if matchOldForm:
             # Add zero
-            companyId = "0"+companyId
+            company_id = "0"+company_id
 
-        match = re.search("\\A[0-9]{7}\\-[0-9]{1}", companyId)
+        match = re.search("\\A[0-9]{7}\\-[0-9]{1}", company_id)
         if match:
             # Validate checksum of business ID
-            numbers = [int(char) for char in companyId[:7]]
+            numbers = [int(char) for char in company_id[:7]]
             multipliers = [7, 9, 10, 5, 8, 4, 2]
             result = 0
             index = 0
@@ -30,7 +35,7 @@ class Validator:
             else:
                 checksum = 11-remainder
 
-            if int(companyId[8]) == checksum:
+            if int(company_id[8]) == checksum:
                 return True
             else:
                 return False

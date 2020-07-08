@@ -1,11 +1,11 @@
 from django.http import JsonResponse, HttpResponseBadRequest, Http404
 from .validator import Validator
-from .models import Address, Company, Name, PhoneNumber, Website
+from .models import Address, Name, PhoneNumber, Website
 from .businessdataservice import BusinessDataService
 
 
 # Function for endpoint /api/company/<business-id>
-def index(request, company_id):
+def company(request, company_id):
 
     if Validator.is_valid_company_id(company_id) is False:
         return HttpResponseBadRequest(
@@ -18,15 +18,7 @@ def index(request, company_id):
     if service.number_of_results() == 0:
         raise Http404()
 
-    business_id = service.get_business_id()
-
-    # Check if Company already exists in local db
-    try:
-        company = Company.objects.get(business_id=business_id)
-    except Company.DoesNotExist:
-        # If not, store it
-        company = Company(business_id)
-        company.save()
+    company = service.get_company_from_db(company_id)
 
     service.save_data_to_db("names", "order", [0], "name", Name,
                             company)
@@ -49,6 +41,6 @@ def index(request, company_id):
     # "address": "<street address, postal code and city>",
     # "phone": "<company primary phone number>",
     # "website": "<company website url>"
-    response = service.form_response_from_db(business_id)
+    response = service.form_response_from_db(company_id)
 
     return JsonResponse(response, safe=False)

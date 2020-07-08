@@ -11,6 +11,8 @@ autopep8 = "*"
 django = "*"
 gunicorn = "*"
 requests = "*"
+sphinx = "*"
+rinohtype = "*"
 
 [requires]
 python_version = "3.8"

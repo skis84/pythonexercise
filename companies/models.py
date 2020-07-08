@@ -1,10 +1,17 @@
 from django.db import models
 
-# Models for storing company information to database
+"""
+.. module:: models
+   :synopsis: Contains models for the company API
+.. moduleauthor:: Sanna Luukkonen
+"""
 
 
 class Company(models.Model):
     business_id = models.SlugField(max_length=9, primary_key=True)
+    # This field is added for convenience in admin panel,
+    # the actual names are stored in Name table
+    business_name = models.CharField(max_length=255)
 
     def __str__(self):
         return self.business_id
