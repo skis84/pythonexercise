@@ -21,12 +21,19 @@ Instructions to run:
 git clone git@github.com:skis84/pythonexercise.git
 
 In project folder, run the following commands:
+
 pip3 install pipenv
+
 pipenv install
+
 pipenv shell
+
 python3 manage.py migrate
+
 python3 manage.py createsuperuser
+
 python3 manage.py runserver
 
 Tests can be run with:
+
 python3 manage.py test
