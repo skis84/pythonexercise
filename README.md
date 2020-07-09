@@ -18,6 +18,7 @@ Company data is fetched from the open data api by the Finnish business informati
 The application also keeps local copies of the data in SQLite3 database
 
 Instructions to run:
+
 git clone git@github.com:skis84/pythonexercise.git
 
 In project folder, run the following commands:
