@@ -83,6 +83,13 @@ as the foreign key for the data.</p>
 </dd></dl>
 
 <dl class="py method">
+<dt id="companies.businessdataservice.BusinessDataService.do_api_call">
+<code class="sig-name descname">do_api_call</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">company_id</span></em><span class="sig-paren">)</span><a class="headerlink" href="#companies.businessdataservice.BusinessDataService.do_api_call" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets results from the api endpoint and stores
+the result JSON in class property</p>
+</dd></dl>
+
+<dl class="py method">
 <dt id="companies.businessdataservice.BusinessDataService.form_response_from_db">
 <code class="sig-name descname">form_response_from_db</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">business_id</span></em><span class="sig-paren">)</span><a class="headerlink" href="#companies.businessdataservice.BusinessDataService.form_response_from_db" title="Permalink to this definition">¶</a></dt>
 <dd><p>Forms the API JSON response based on the data in database.</p>
@@ -111,7 +118,7 @@ business id was found from JSON data</p>
 <dt id="companies.businessdataservice.BusinessDataService.get_company_from_db">
 <code class="sig-name descname">get_company_from_db</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">business_id</span></em><span class="sig-paren">)</span><a class="headerlink" href="#companies.businessdataservice.BusinessDataService.get_company_from_db" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="simple">
-<dt>Get company object from db. Creates a new company if a</dt><dd><p>company with the given business id is does not exist.</p>
+<dt>Get company object from db or creates a new company if a</dt><dd><p>company with the given business id is does not exist.</p>
 </dd>
 </dl>
 <dl class="field-list simple">
@@ -148,13 +155,6 @@ relevant data</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="companies.businessdataservice.BusinessDataService.get_results">
-<code class="sig-name descname">get_results</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">company_id</span></em><span class="sig-paren">)</span><a class="headerlink" href="#companies.businessdataservice.BusinessDataService.get_results" title="Permalink to this definition">¶</a></dt>
-<dd><p>Gets results from the api endpoint and stores
-the result JSON in class property</p>
-</dd></dl>
-
-<dl class="py method">
 <dt id="companies.businessdataservice.BusinessDataService.is_valid">
 <code class="sig-name descname">is_valid</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">data</span></em><span class="sig-paren">)</span><a class="headerlink" href="#companies.businessdataservice.BusinessDataService.is_valid" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns true if the data has no end date.</p>
@@ -169,12 +169,12 @@ there are results</p>
 
 <dl class="py method">
 <dt id="companies.businessdataservice.BusinessDataService.save_data_to_db">
-<code class="sig-name descname">save_data_to_db</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">array_label</span></em>, <em class="sig-param"><span class="n">type_label</span></em>, <em class="sig-param"><span class="n">accepted_data_types</span></em>, <em class="sig-param"><span class="n">data_label</span></em>, <em class="sig-param"><span class="n">class_name</span></em>, <em class="sig-param"><span class="n">company</span></em>, <em class="sig-param"><span class="n">get_data_from_db</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">create_db_object</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#companies.businessdataservice.BusinessDataService.save_data_to_db" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">save_data_to_db</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">result_label</span></em>, <em class="sig-param"><span class="n">type_label</span></em>, <em class="sig-param"><span class="n">accepted_data_types</span></em>, <em class="sig-param"><span class="n">data_label</span></em>, <em class="sig-param"><span class="n">class_name</span></em>, <em class="sig-param"><span class="n">company</span></em>, <em class="sig-param"><span class="n">get_data_from_db</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">create_db_object</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#companies.businessdataservice.BusinessDataService.save_data_to_db" title="Permalink to this definition">¶</a></dt>
 <dd><p>Examines a certain subset of JSON result and stores data to db (SQLite3)</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>array_label</strong> – The name of the subset in JSON to examine
+<li><p><strong>result_label</strong> – The name of the subset in JSON to examine
 e.g. “names”</p></li>
 <li><p><strong>type_label</strong> – Label for the accepted type, e.g. order</p></li>
 <li><p><strong>accepted_data_types_label</strong> – List of accepted data types, e.g. [0]</p></li>
