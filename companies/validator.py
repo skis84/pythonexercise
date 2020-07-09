@@ -7,7 +7,7 @@ class Validator:
     '''
     @classmethod
     def is_valid_company_id(cls, company_id):
-        ''' Validates the given company_id. Returns True if the id is valid, 
+        ''' Validates the given company_id. Returns True if the id is valid,
         False otherwise.
         :param company_id: The company id to validate.
         '''
