@@ -23,9 +23,24 @@ class BusinessDataServiceTestCase(TestCase):
         self.assertEqual(1, len(result))
         self.assertEqual("Nokia Oyj", result[0].value)
 
+    def test_save_data_to_db_with_invalid_result_label(self):
+        mock_service = MockBusinessDataService()
+        company = Company("1234567-8")
+        company.save()
+        # There is no result called names3
+        mock_service.save_data_to_db("names3", "order", [0], "name", Name,
+                                     company)
+
+        # Now database should not have any names
+        result = Name.objects.all()
+        self.assertEqual(0, len(result))
+
+    def test_number_of_results(self):
+        service = BusinessDataService()
+        self.assertEqual(0, service.number_of_results())
+
     def test_empty_value_is_not_stored_to_db(self):
         mock_service = MockBusinessDataServiceWithEmptyPhoneNumber()
-        mock_service.get_results("012345678")
 
         company = Company("1234567-8")
         company.save()
@@ -97,6 +112,10 @@ class BusinessDataServiceTestCase(TestCase):
         self.assertEqual(response["phone"], "")
         self.assertEqual(response["website"], "")
 
+    def test_get_result_without_json_data(self):
+        service = BusinessDataService()
+        self.assertEqual(None, service.get_result())
+
     def populateDb(self, includeData=True):
         company = Company("1234567-8")
         company.save()
@@ -122,6 +141,11 @@ class BusinessDataServiceTestCase(TestCase):
 
 
 class MockBusinessDataService (BusinessDataService):
+
+    def do_api_call(self):
+        # Do nothing here
+        pass
+
     def get_result(self):
         test_json_string = """
                 {"businessId":"1234567-8",
@@ -159,6 +183,11 @@ class MockBusinessDataService (BusinessDataService):
 
 
 class MockBusinessDataServiceWithEmptyPhoneNumber (BusinessDataService):
+
+    def do_api_call(self):
+        # Do nothing here
+        pass
+
     def get_result(self):
         test_json_string = """
                 {"businessId":"1234567-3",

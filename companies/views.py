@@ -12,7 +12,7 @@ def company(request, company_id):
             "Bad request, please give valid company id.")
 
     service = BusinessDataService()
-    service.get_results(company_id)
+    service.do_api_call(company_id)
 
     # Return 404 response if no results
     if service.number_of_results() == 0:

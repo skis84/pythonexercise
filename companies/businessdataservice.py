@@ -19,19 +19,18 @@ class BusinessDataService:
         self.jsonData = ""
         self.results = ""
 
-    def get_results(self, company_id):
+    def do_api_call(self, company_id):
         """ Gets results from the api endpoint and stores
         the result JSON in class property
         """
         response = requests.get(self.api_url + company_id)
         self.jsonData = response.json()
-        self.results = self.jsonData["results"]
-        return self.jsonData
+        self.results = self.jsonData.get("results")
 
     # Get company from db or create a new one
     # if company does not exist
     def get_company_from_db(self, business_id):
-        ''' Get company object from db. Creates a new company if a
+        ''' Get company object from db or creates a new company if a
             company with the given business id is does not exist.
 
         :param business_id: Business id of the company to search for
@@ -47,12 +46,12 @@ class BusinessDataService:
             company.save()
         return company
 
-    def save_data_to_db(self, array_label, type_label, accepted_data_types,
+    def save_data_to_db(self, result_label, type_label, accepted_data_types,
                         data_label, class_name, company,
                         get_data_from_db=None, create_db_object=None):
         '''Examines a certain subset of JSON result and stores data to db (SQLite3)
 
-        :param array_label: The name of the subset in JSON to examine
+        :param result_label: The name of the subset in JSON to examine
                             e.g. "names"
         :param type_label: Label for the accepted type, e.g. order
         :param accepted_data_types_label: List of accepted data types, e.g. [0]
@@ -79,28 +78,33 @@ class BusinessDataService:
         if create_db_object is None:
             create_db_object = self.create_db_object
 
-        for data in self.get_result()[array_label]:
+        all_results = self.get_result()
+        relevant_results = all_results.get(result_label)
 
-            data_from_db = get_data_from_db(company, data, class_name,
-                                            data_label, type_label)
+        if relevant_results:
+            for data in relevant_results:
 
-            if self.is_valid(data):
-                data_not_empty = data.get(data_label) != ""
-                correct_data_type = data.get(type_label) in accepted_data_types
-                not_in_db = data_from_db is None
+                data_from_db = get_data_from_db(company, data, class_name,
+                                                data_label, type_label)
 
-                if data_not_empty and correct_data_type and not_in_db:
-                    # Does not exist, create it
-                    data = create_db_object(company, data,
-                                            class_name, data_label,
-                                            type_label)
-                    data.save()
-            elif data_from_db:
-                # This piece of data is in the db but is not valid, so set
-                # end date and version to correct values
-                data_from_db.end_date = data.get(self.end_date_label)
-                data_from_db.version = data.get(self.version_label)
-                data_from_db.save()
+                if self.is_valid(data):
+                    data_not_empty = data.get(data_label) != ""
+                    correct_data_type = data.get(
+                        type_label) in accepted_data_types
+                    not_in_db = data_from_db is None
+
+                    if data_not_empty and correct_data_type and not_in_db:
+                        # Does not exist, create it
+                        data = create_db_object(company, data,
+                                                class_name, data_label,
+                                                type_label)
+                        data.save()
+                elif data_from_db:
+                    # This piece of data is in the db but is not valid, so set
+                    # end date and version to correct values
+                    data_from_db.end_date = data.get(self.end_date_label)
+                    data_from_db.version = data.get(self.version_label)
+                    data_from_db.save()
 
     def get_business_id(self):
         ''' Returns the business id if get_results has been called and
@@ -115,12 +119,18 @@ class BusinessDataService:
     def number_of_results(self):
         ''' Returns the number of results if get_results has been called and
         there are results'''
-        return len(self.jsonData["results"])
+        if self.jsonData:
+            return len(self.jsonData.get("results"))
+        else:
+            return 0
 
     def get_result(self):
         ''' Returns the result array that contains the name, address and other
         relevant data'''
-        return self.results[0]
+        try:
+            return self.results[0]
+        except IndexError:
+            return None
 
     def get_address_from_db(self, company, addr_in_json, *argv):
         ''' Returns an Address object from the database.
