@@ -3,7 +3,7 @@
 import os
 import sys
 import numpy
-
+import zeep
 
 def main():
     os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'pythonexercise.settings')
